@@ -1,4 +1,4 @@
-package com.yuvasai.nycschools.ui.theme
+package com.yuvasai.nycschools.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.yuvasai.nycschools.ui.theme
+package com.yuvasai.nycschools.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
