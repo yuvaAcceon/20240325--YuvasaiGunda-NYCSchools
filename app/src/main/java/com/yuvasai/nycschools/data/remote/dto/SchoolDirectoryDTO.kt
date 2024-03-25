@@ -1,9 +1,9 @@
 package com.yuvasai.nycschools.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.yuvasai.nycschools.domain.model.DirectoryItem
+import com.yuvasai.nycschools.domain.model.SchoolDirectory
 
-data class Directory(
+data class SchoolDirectoryDTO(
     @SerializedName("academicopportunities1")
     val academicOpportunities1: String,
     @SerializedName("academicopportunities2")
@@ -25,7 +25,7 @@ data class Directory(
     val bus: String,
     @SerializedName("census_tract")
     val censusTract: String,
-    val city: String,
+    val city: String?,
     val code1: String,
     @SerializedName("community_board")
     val communityBoard: String,
@@ -72,7 +72,7 @@ data class Directory(
     @SerializedName("phone_number")
     val phoneNumber: String,
     @SerializedName("primary_address_line_1")
-    val primaryAddressLine1: String,
+    val primaryAddressLine1: String?,
     val program1: String,
     @SerializedName("requirement1_1")
     val requirement11: String,
@@ -89,31 +89,33 @@ data class Directory(
     @SerializedName("school_accessibility_description")
     val schoolAccessibilityDescription: String,
     @SerializedName("school_email")
-    val schoolEmail: String,
+    val schoolEmail: String?,
     @SerializedName("school_name")
-    val schoolName: String,
+    val schoolName: String?,
     @SerializedName("school_sports")
     val schoolSports: String,
     val seats101: String,
     val seats9ge1: String,
     val seats9swd1: String,
     @SerializedName("state_code")
-    val stateCode: String,
+    val stateCode: String?,
     val subway: String,
     @SerializedName("total_students")
-    val totalStudents: String,
-    val website: String,
-    val zip: String
+    val totalStudents: String?,
+    val website: String?,
+    val zip: String?
 )
 
-fun Directory.toDirectoryItem(): DirectoryItem {
-    return DirectoryItem(
+fun SchoolDirectoryDTO.toSchoolDirectoryItem(): SchoolDirectory {
+    return SchoolDirectory(
         dbn = dbn,
-        schoolName = schoolName,
-        schoolEmail = schoolEmail,
-        stateCode = stateCode,
-        totalStudents = totalStudents,
-        website = website,
-        zip = zip
+        schoolName = schoolName ?: "Name does not exist",
+        schoolEmail = schoolEmail ?: "Email does not exist",
+        stateCode = stateCode ?: "State Code data does not exist",
+        totalStudents = totalStudents ?: "Count does not exist",
+        website = website ?: "Website does not exist",
+        address = primaryAddressLine1 ?: "Address data does not exist",
+        city = city ?: "City data does not exist",
+        zip = zip ?: "Zip data does not exist"
     )
 }

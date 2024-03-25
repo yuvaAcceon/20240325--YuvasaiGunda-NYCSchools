@@ -1,7 +1,7 @@
 package com.yuvasai.nycschools.domain
 
-sealed interface DataError: Error {
-    enum class Network: DataError {
+sealed interface DataError : Error {
+    enum class Network : DataError {
         REQUEST_TIMEOUT,
         TOO_MANY_REQUESTS,
         NO_INTERNET,
@@ -10,7 +10,9 @@ sealed interface DataError: Error {
         SERIALIZATION,
         UNKNOWN
     }
-    enum class Local: DataError {
-        DISK_FULL
+
+    enum class Local : DataError {
+        DISK_FULL,
+        ITEM_NOT_FOUND
     }
 }
