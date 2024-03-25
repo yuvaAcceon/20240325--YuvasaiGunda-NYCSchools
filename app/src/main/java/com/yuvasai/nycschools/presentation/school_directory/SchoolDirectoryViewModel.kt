@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yuvasai.nycschools.R
+import com.yuvasai.nycschools.data.di.StringResourcesProvider
 import com.yuvasai.nycschools.domain.use_case.get_directory.DefaultPaginator
 import com.yuvasai.nycschools.domain.use_case.get_directory.GetSchoolDirectoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SchoolDirectoryViewModel @Inject constructor(
-    private val getDirectoryUseCase: GetSchoolDirectoryUseCase
+    private val getDirectoryUseCase: GetSchoolDirectoryUseCase,
+    private val stringResourcesProvider: StringResourcesProvider
 ) : ViewModel() {
     var state by mutableStateOf(SchoolDirectoryState())
 
@@ -33,10 +36,11 @@ class SchoolDirectoryViewModel @Inject constructor(
         },
         onError = {
             val message = when (it) {
-                is HttpException -> "Failed to fetch data from the server. Please try again later."
-                is UnknownHostException -> "Unable to establish a network connection. Please check your internet connection and try again."
-                is IOException -> "An error occurred while communicating with the server. Please try again later."
-                else -> it?.localizedMessage ?: "An unknown error occurred. Please try again later."
+                is HttpException -> stringResourcesProvider.getString(R.string.http_exception)
+                is UnknownHostException -> stringResourcesProvider.getString(R.string.unknown_host_exception)
+                is IOException -> stringResourcesProvider.getString(R.string.io_exception)
+                else -> it?.localizedMessage
+                    ?: stringResourcesProvider.getString(R.string.unknown_exception)
             }
             state = state.copy(error = message)
         },

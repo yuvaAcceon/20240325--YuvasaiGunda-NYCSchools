@@ -2,4 +2,8 @@
     <string name="app_name">NYC Schools</string>
     <string name="school_name">School Name</string>
     <string name="nyc_schools">NYC Schools</string>
+    <string name="http_exception">Failed to fetch data from the server. Please try again later.</string>
+    <string name="unknown_host_exception">Unable to establish a network connection. Please check your internet connection and try again.</string>
+    <string name="io_exception">An error occurred while communicating with the server. Please try again later.</string>
+    <string name="unknown_exception">An unknown error occurred. Please try again later.</string>
 </resources>
