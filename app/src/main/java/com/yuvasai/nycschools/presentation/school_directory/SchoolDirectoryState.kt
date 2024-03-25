@@ -11,7 +11,7 @@ import com.yuvasai.nycschools.domain.model.SchoolDirectory
 data class SchoolDirectoryState(
     val isLoading: Boolean = false,
     val items: List<SchoolDirectory> = emptyList(),
-    val error: String? = null,
+    val error: String? = "",
     val endReached: Boolean = false,
     val page: Int = 0
 )

@@ -6,6 +6,7 @@
 package com.yuvasai.nycschools.presentation.school_directory
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +22,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -39,51 +42,67 @@ fun SchoolDirectoryScreen(
     viewModel: SchoolDirectoryViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
-    Column {
-        TopAppBar(
-            modifier = Modifier.shadow(
-                elevation = 20.dp,
-                spotColor = Color.DarkGray
-            ),
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-            ),
-            title = {
-                Text(stringResource(R.string.nyc_schools))
-            }
-        )
-        LazyColumn(
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    start = 10.dp,
-                    end = 10.dp
-                )
         ) {
-            items(state.items.size) { i ->
-                val item = state.items[i]
-                if (i >= state.items.size - 1 && !state.endReached && !state.isLoading) {
-                    viewModel.loadNextItems()
+            TopAppBar(
+                modifier = Modifier.shadow(
+                    elevation = 20.dp,
+                    spotColor = Color.DarkGray
+                ),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(stringResource(R.string.nyc_schools))
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                SchoolDirectoryItem(school = item, onItemClick = {
-                    navController.navigate(Screen.SchoolDetailsScreen.route + "/${item.dbn}")
-                })
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-            item {
-                if (state.isLoading) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        CircularProgressIndicator()
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp
+                    )
+            ) {
+                items(state.items.size) { i ->
+                    val item = state.items[i]
+                    if (i >= state.items.size - 1 && !state.endReached && !state.isLoading) {
+                        viewModel.loadNextItems()
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SchoolDirectoryItem(school = item, onItemClick = {
+                        navController.navigate(Screen.SchoolDetailsScreen.route + "/${item.dbn}")
+                    })
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                item {
+                    if (state.isLoading) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
                 }
             }
+        }
+        if (!state.error.isNullOrBlank()) {
+            Text(
+                text = state.error,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .align(Alignment.Center)
+            )
         }
     }
 }

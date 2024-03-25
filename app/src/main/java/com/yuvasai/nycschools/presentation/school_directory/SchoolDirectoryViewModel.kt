@@ -9,6 +9,9 @@ import com.yuvasai.nycschools.domain.use_case.get_directory.DefaultPaginator
 import com.yuvasai.nycschools.domain.use_case.get_directory.GetSchoolDirectoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +32,13 @@ class SchoolDirectoryViewModel @Inject constructor(
             state.page + 1
         },
         onError = {
-            state = state.copy(error = it?.localizedMessage)
+            val message = when (it) {
+                is HttpException -> "Failed to fetch data from the server. Please try again later."
+                is UnknownHostException -> "Unable to establish a network connection. Please check your internet connection and try again."
+                is IOException -> "An error occurred while communicating with the server. Please try again later."
+                else -> it?.localizedMessage ?: "An unknown error occurred. Please try again later."
+            }
+            state = state.copy(error = message)
         },
         onSuccess = { items, newKey ->
             state = state.copy(
