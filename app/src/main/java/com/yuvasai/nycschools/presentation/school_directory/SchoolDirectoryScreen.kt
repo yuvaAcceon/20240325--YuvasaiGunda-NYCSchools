@@ -26,12 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.yuvasai.nycschools.R
+import com.yuvasai.nycschools.common.TestTags
 import com.yuvasai.nycschools.presentation.Screen
 import com.yuvasai.nycschools.presentation.school_directory.components.SchoolDirectoryItem
 
@@ -48,10 +50,12 @@ fun SchoolDirectoryScreen(
                 .fillMaxSize()
         ) {
             TopAppBar(
-                modifier = Modifier.shadow(
-                    elevation = 20.dp,
-                    spotColor = Color.DarkGray
-                ),
+                modifier = Modifier
+                    .shadow(
+                        elevation = 20.dp,
+                        spotColor = Color.DarkGray
+                    )
+                    .testTag(TestTags.TOOL_BAR_TEXT),
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
